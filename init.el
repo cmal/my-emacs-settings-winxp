@@ -3,28 +3,54 @@
 ;;; 先设置HKCU\SOFTWARE\GNU\Emacs\HOME
 ;;(setq-default load-path (cons "~/.emacs.d/" load-path))
 
-;; org-settings.el
-(load-file "~/.emacs.d/org-settings.el")
+;; melpa
+(require 'package)
+(add-to-list 'package-archives 
+;;              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+              '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
 
+
+
+;; org-settings.el
+(add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
+(require 'org-freemind)
+(require 'org-special-blocks)
+;;(load-file "~/.emacs.d/org-settings.el")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(cfs--current-profile-name "profile2" t)
+ '(cfs--fontsize-steps (quote (4 3 4)) t)
+ '(custom-enabled-themes (quote (tango)))
+ '(org-agenda-files (quote ("D:/Git/org/emacs.org"))))
 ;; ====设置GUI属性====
 ;;字体
-(load-file "~/.emacs.d/font-settings.el")
+;;(load-file "~/.emacs.d/font-settings.el")
+(require 'chinese-fonts-setup)
 
 ;; Ctrl+滚轮缩放
 ;; 默认为 C-x C-+ 和 C-x C--
-(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+;(global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+;(global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+(global-set-key (kbd "<C-wheel-up>") 'cfs-increase-fontsize)
+(global-set-key (kbd "<C-wheel-down>") 'cfs-decrease-fontsize)
+
 
 ;; 默认窗口大小
 (setq-default default-frame-alist
-      '((height . 30) (width . 80) (menu-bar-lines . 20) (tool-bar-lines . 0)))
+      '((height . 40) (width . 80) (menu-bar-lines . 20) (tool-bar-lines . 0)))
 
 ;; ====gui====
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 ;(set-fringe-mode '(0 . 0))
-
+(set-background-color "#F9F9F5")
 ;; 设置bookmark存储文件 
 (setq-default bookmark-default-file "~/.emacs.d/bookmarks")
 
@@ -136,6 +162,27 @@
 ;; 显示括号匹配，光标在括号之后生效
 (show-paren-mode t)
 
+;; org 折行, disable org C-e, C-a
+(eval-after-load 'org
+  (progn
+    (define-key org-mode-map (kbd "C-e") nil)
+    (define-key org-mode-map (kbd "C-a") nil)))
+;;(setq truncate-partial-width-windows nil)
+;;(add-hook 'org-mode-hook (lambda () (setq truncate-lines t)))
+(add-hook 'org-mode-hook (lambda () (toggle-truncate-lines nil)))
+
+
+
+;; org-mode export to latex CJK support
+;; (setq org-latex-to-pdf-process
+;;       `("xelatex -interaction nonstopmode %f"
+;; 	"xelatex -interaction nonstopmode %f"))
+;; (add-to-list 'org-export-latex-classes
+;; 	     '("cn-article"
+;; 	       "\\documentclass[10pt,a4paper]{article}
+;; \\usepackage{graphicx}
+;; \\usepackage{xeCJK}
+;; \\title{}"))
 
 ;; ==== pending ====
 ;; determine/check OS type
@@ -180,12 +227,7 @@
 ;; tramp
 ;;(load-file "~/.emacs.d/tramp.el") ; plz go there to change the remote dirs
 
-;; melpa
-;;(require 'package)
-;;(add-to-list 'package-archives 
-;;              '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
-;; chrome edit-server
+; chrome edit-server
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/chrome")
 ;;(require 'edit-server)
 ;;(edit-server-start)

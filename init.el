@@ -2,20 +2,45 @@
 ;;; This is the emacs init.el file for my Windows XP
 ;;; 先设置HKCU\SOFTWARE\GNU\Emacs\HOME
 ;;(setq-default load-path (cons "~/.emacs.d/" load-path))
+;; 英文环境，时间等
+(set-language-environment "English")
+
+;; el-get -- packages manager
+;; plz install el-get first; goto el-get homepage see how to install
+(load-file "~/.emacs.d/el-get.el")
+
 
 ;; melpa
 (require 'package)
 (add-to-list 'package-archives 
 ;;              '("melpa" . "http://melpa.milkbox.net/packages/") t)
               '("melpa" . "http://melpa.org/packages/") t)
+;; elpy, then M-x package-install elpy
+;;(add-to-list 'package-archives
+;;             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 (package-initialize)
 
+;; elpy
+(elpy-enable)  ;; and then M-x elpy-config RET
 
+;; Standard Jedi.el setting -- python auto-complete
+;; Type:
+;;     M-x el-get-install RET jedi RET
+;;     M-x jedi:install-server RET
+;; Then open Python file.
+;(add-hook 'python-mode-hook 'jedi:setup)
+;(setq jedi:complete-on-dot t)
+
+
+
+;; find-file default directory
+(setq-default default-directory "D:/Git/org/")
 
 ;; org-settings.el
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
 (require 'org-freemind)
 (require 'org-special-blocks)
+;;(require 'uimage)
 ;;(load-file "~/.emacs.d/org-settings.el")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -24,9 +49,9 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(cfs--current-profile-name "profile2" t)
- '(cfs--fontsize-steps (quote (4 3 4)) t)
- '(custom-enabled-themes (quote (tango)))
+ '(cfs--current-profile-name "profile1" t)
+ '(cfs--fontsize-steps (quote (2 2 2)) t)
+ '(custom-enabled-themes (quote (tango-dark)))
  '(org-agenda-files (quote ("D:/Git/org/emacs.org"))))
 ;; ====设置GUI属性====
 ;;字体
@@ -43,15 +68,15 @@
 
 ;; 默认窗口大小
 (setq-default default-frame-alist
-      '((height . 40) (width . 80) (menu-bar-lines . 20) (tool-bar-lines . 0)))
+      '((height . 40) (width . 84) (menu-bar-lines . 20) (tool-bar-lines . 0)))
 
 ;; ====gui====
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (menu-bar-mode 0)
 ;(set-fringe-mode '(0 . 0))
-(set-background-color "#F9F9F5")
-;; 设置bookmark存储文件 
+;(set-background-color "#F9F9F5")
+;; 设置bookmark存储文件
 (setq-default bookmark-default-file "~/.emacs.d/bookmarks")
 
 ;; emacs-server
@@ -64,9 +89,6 @@
 
 ;; 默认开启调试
 (setq-default debug-on-error t)
-
-;; 英文环境，时间等
-(set-language-environment "English")
 
 ;; aspell
 (add-to-list 'exec-path "D:/Program Files/Aspell/bin/")
@@ -108,10 +130,6 @@
 (fset 'narrow-next-para-other-window (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([24 111 f5 24 111] 0 "%d")) arg)))
 (global-set-key (kbd "C-<f5>") 'narrow-next-para-other-window)
 
-
-;; el-get -- packages manager
-;; plz install el-get first; goto el-get homepage see how to install
-(load-file "~/.emacs.d/el-get.el")
  
 ;; transpose-buffers 对调buffer
 (defun transpose-buffers (arg)
@@ -132,14 +150,6 @@
 
 ;; smex
 (global-set-key (kbd "M-x") 'smex)
-
-;; Standard Jedi.el setting -- python auto-complete
-;; Type:
-;;     M-x el-get-install RET jedi RET
-;;     M-x jedi:install-server RET
-;; Then open Python file.
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
 
 
 ;; lisp括号逐级高亮，需要借助highlight-parentheses，autopair
@@ -187,16 +197,16 @@
 ;; ==== pending ====
 ;; determine/check OS type
 ;; pending .. for merging init.el
-(cond
- ((string-equal system-type "windows-nt") ; Microsoft Windows
-  (progn
-    (message "MSWin")))
- ((string-equal system-type "darwin") ; Mac OS X
-  (progn
-    (message "OSX")))
- ((string-equal system-type "gnu/linux") ; linux
-  (progn
-    (message "Linux"))))
+;; (cond
+;;  ((string-equal system-type "windows-nt") ; Microsoft Windows
+;;   (progn
+;;     (message "MSWin")))
+;;  ((string-equal system-type "darwin") ; Mac OS X
+;;   (progn
+;;     (message "OSX")))
+;;  ((string-equal system-type "gnu/linux") ; linux
+;;   (progn
+;;     (message "Linux"))))
 
 
 ;; ==== depreciated ====
@@ -237,3 +247,27 @@
 ;;(global-unset-key (kbd "C-SPC"))
 ;;(global-set-key (kbd "M-SPC") 'set-mark-command)
 		 
+(load-file "~/.emacs.d/site-lisp/window-numbering.el")
+(require 'window-numbering)
+(window-numbering-mode 1)
+
+(load-file "~/.emacs.d/site-lisp/unicad.el")
+(require 'unicad)
+
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/python/")
+;(require 'django-html-mode)
+;(require 'django-mode)
+
+(load-file "~/.emacs.d/site-lisp/web-mode.el")
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)

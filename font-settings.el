@@ -57,7 +57,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
 ;; 设置字体
 (qiang-set-font
  '(
-;;   "Caecilia LT Std"
+;   "Caecilia LT Std"
    "Consolas"
    "Monaco"
 ;;   "Tahoma"

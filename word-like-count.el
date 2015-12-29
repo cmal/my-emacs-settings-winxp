@@ -41,8 +41,6 @@ mode-line-position
 nil))))
 
 
-
-
 (define-minor-mode word-like-count-mode
 "A simple minor-mode to display the word like coun in the status bar.")
 

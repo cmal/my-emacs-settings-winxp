@@ -49,10 +49,14 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(cfs--current-profile-name "profile1" t)
  '(cfs--fontsize-steps (quote (2 2 2)) t)
- '(custom-enabled-themes (quote (tango-dark)))
- '(org-agenda-files (quote ("D:/Git/org/emacs.org"))))
+ '(custom-enabled-themes (quote (wheatgrass)))
+ '(custom-safe-themes
+   (quote
+    ("f024aea709fb96583cf4ced924139ac60ddca48d25c23a9d1cd657a2cf1e4728" default))))
 ;; ====设置GUI属性====
 ;;字体
 ;;(load-file "~/.emacs.d/font-settings.el")
@@ -90,19 +94,19 @@
 ;; 默认开启调试
 (setq-default debug-on-error t)
 
-;; aspell
-(add-to-list 'exec-path "D:/Program Files/Aspell/bin/")
-(setq ispell-program-name "aspell")
-(setq-default ispell-program-name "aspell")
-;(setq ispell-personal-dictionary "C:/Emacs/lisp/textmodes")
-(require 'ispell)
-;(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-;(global-set-key (kbd "<f8>") 'ispell-word)
-;(global-set-key (kbd "C-<f8>") 'flyspell-mode)
+;; ;; aspell
+;; (add-to-list 'exec-path "D:/Program Files/Aspell/bin/")
+;; (setq ispell-program-name "aspell")
+;; (setq-default ispell-program-name "aspell")
+;; ;(setq ispell-personal-dictionary "C:/Emacs/lisp/textmodes")
+;; (require 'ispell)
+;; ;(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+;; ;(global-set-key (kbd "<f8>") 'ispell-word)
+;; ;(global-set-key (kbd "C-<f8>") 'flyspell-mode)
 
 
 ;;; Rebind `C-x C-b' for `buffer-menu'
-(global-set-key "\C-x\C-b" 'buffer-menu)
+;;(global-set-key "\C-x\C-b" 'buffer-menu)
 
 
 ;;; emacs w3m for windows
@@ -115,13 +119,8 @@
 (setq w3m-home-page "http://10.20.3.101/static/Krishnamurti/index.htm")
 
 
-;; 中文计数
-;; status bar 依次显示：
-;; 字数,字符数不计空格,字符数计空格,非中文单词,中文字符和朝鲜语单词
-(load-file "~/.emacs.d/word-like-count.el")
-(require 'word-like-count-mode)
-(global-set-key "\C-xw" 'word-like-count-mode)
 (put 'narrow-to-region 'disabled nil)
+
 
 ;; freedom_from_the_know.txt 文件中每次narrow下一个段落，F5调用，C-F5对other window调用
 (fset 'narrow-next-para
@@ -143,7 +142,7 @@
         (set-window-buffer (funcall selector) this-win)
         (select-window (funcall selector)))
       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
-(global-set-key (kbd "M-9") 'transpose-buffers)
+(global-set-key (kbd "C-;") 'transpose-buffers)
 
 ;; undo-tree package
 (undo-tree-mode t)
@@ -171,6 +170,10 @@
 
 ;; 显示括号匹配，光标在括号之后生效
 (show-paren-mode t)
+
+;; 美化显示符号（elisp），比如lambda会显示为λ
+;;(prettify-symbols-mode)
+;;(global-prettify-symbols-mode 1)
 
 ;; org 折行, disable org C-e, C-a
 (eval-after-load 'org
@@ -246,7 +249,7 @@
 ;; -- sougou shortkey has been changed to C-,
 ;;(global-unset-key (kbd "C-SPC"))
 ;;(global-set-key (kbd "M-SPC") 'set-mark-command)
-		 
+
 (load-file "~/.emacs.d/site-lisp/window-numbering.el")
 (require 'window-numbering)
 (window-numbering-mode 1)
@@ -271,3 +274,34 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(global-anzu-mode +1)
+
+(require 'helm-config)
+(helm-mode 1)
+
+;;(setq-default magit-git-executable "D:/Program Files/Git/bin/git")
+;;(require 'magit)
+
+;; powerline 不方便定制
+;;(require 'powerline)
+;;(powerline-default-theme)
+
+
+;; 中文计数
+;; status bar 依次显示：
+;; 字数,字符数不计空格,字符数计空格,非中文单词,中文字符和朝鲜语单词
+;; (load-file "~/.emacs.d/word-like-count.el")
+;; (require 'word-like-count-mode)
+;; (global-set-key "\C-xw" 'word-like-count-mode)
+(load-file "~/.emacs.d/chinese-count.el")
+(require 'chinese-count-mode)
+(global-set-key "\C-xw" 'chinese-count-mode)
+
+(chinese-count-mode)

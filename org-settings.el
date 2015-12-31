@@ -1,9 +1,13 @@
+(require 'org-freemind)
+(require 'org-special-blocks)
+
+
 ;; ====org-agenda====
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cc" 'org-capture)
 (setq-default org-clock-persist 'history)
-(org-clock-persistence-insinuate)
+;;(org-clock-persistence-insinuate)
 (setq-default org-clock-done 'time)
 (setq-default org-use-fast-todo-selection t)
 (setq-default org-agenda-ndays 1)

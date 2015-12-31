@@ -9,19 +9,14 @@
 ;;; Code:
 
 
-(provide 'chinese-count-mode)
-
-
-
 (defun spciall-words-count (start end regexp)
-(let ((count 0))
-(save-excursion
-(goto-char start)
-
-(while (and (< (point) end)
-(re-search-forward regexp end t))
-(setq count (1+ count))))
-count))
+  (let ((count 0))
+    (save-excursion
+      (goto-char start)
+      (while (and (< (point) end)
+		  (re-search-forward regexp end t))
+	(setq count (1+ count))))
+    count))
 
 
 ;; add length display to mode-line construct
@@ -31,7 +26,7 @@ count))
       (append
        mode-line-position
        '((chinese-count-mode
-	  (6 (:eval (format "C:%d 中:%d"
+	  (6 (:eval (format "%d/%d"
 ;;        (6 (:eval (format " %d,%d,%d,%d,%d"
 ;;			    (+ (spciall-words-count (point-min) (point-max) "\\cc") (spciall-words-count (point-min) (point-max) "[A-Za-z0-9][A-Za-z0-9[:punct:]]*"))
 ;;			    (spciall-words-count (point-min) (point-max) "[^[:space:]]")
@@ -41,9 +36,9 @@ count))
 	  nil))))
 
 (define-minor-mode chinese-count-mode
-"A simple minor-mode to display the word like count in the status bar.")
+  "A simple minor-mode to display the word like count in the status bar."
+  :global t)
 
-
-
+(provide 'chinese-count-mode)
 
 ;;; chinese-count-mode.el ends here

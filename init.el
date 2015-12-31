@@ -34,14 +34,12 @@
 
 
 ;; find-file default directory
-(setq-default default-directory "D:/Git/org/")
+;;(setq-default default-directory "D:/Git/org/")
 
 ;; org-settings.el
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
-(require 'org-freemind)
-(require 'org-special-blocks)
 ;;(require 'uimage)
-;;(load-file "~/.emacs.d/org-settings.el")
+(load-file "~/.emacs.d/org-settings.el")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -53,10 +51,16 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(cfs--current-profile-name "profile1" t)
  '(cfs--fontsize-steps (quote (2 2 2)) t)
- '(custom-enabled-themes (quote (wheatgrass)))
- '(custom-safe-themes
+ '(custom-enabled-themes (quote (leuven)))
+ '(ledger-binary-path "D:\\emacs-tools\\ledger\\ledger.exe")
+ '(ledger-reports
    (quote
-    ("f024aea709fb96583cf4ced924139ac60ddca48d25c23a9d1cd657a2cf1e4728" default))))
+    (("bal" "D:\\emacs-tools\\ledger\\ledger.exe -f \"d:/Git/ledger/licai.ledger\" bal")
+     ("reg" "D:\\emacs-tools\\ledger\\ledger.exe -f %(ledger-file) reg")
+     ("payee" "D:\\emacs-tools\\ledger\\ledger.exe -f %(ledger-file) reg @%(payee)")
+     ("account" "D:\\emacs-tools\\ledger\\ledger.exe -f %(ledger-file) reg %(account)")))))
+
+
 ;; ====设置GUI属性====
 ;;字体
 ;;(load-file "~/.emacs.d/font-settings.el")
@@ -269,11 +273,6 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 
 
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -286,8 +285,9 @@
 (require 'helm-config)
 (helm-mode 1)
 
-;;(setq-default magit-git-executable "D:/Program Files/Git/bin/git")
-;;(require 'magit)
+(setq-default magit-git-executable "D:/Program Files/Git/bin/git")
+(require 'magit)
+;;(setenv "GIT_ASKPASS" "git-gui--askpass")
 
 ;; powerline 不方便定制
 ;;(require 'powerline)
@@ -300,8 +300,49 @@
 ;; (load-file "~/.emacs.d/word-like-count.el")
 ;; (require 'word-like-count-mode)
 ;; (global-set-key "\C-xw" 'word-like-count-mode)
+;; !!! 性能问题
 (load-file "~/.emacs.d/chinese-count.el")
-(require 'chinese-count-mode)
+(autoload 'chinese-count-mode "chinese-count-mode")
 (global-set-key "\C-xw" 'chinese-count-mode)
 
-(chinese-count-mode)
+;; clock on mode line
+(display-time-mode 1)
+
+;让Emacs可以直接打开和显示图片
+;(setq auto-image-file-mode t)
+
+;; 全屏 F11
+(toggle-frame-fullscreen)
+
+
+;保存上次emacs关闭时的状态
+;; (load "desktop")
+;; (desktop-load-default)
+;; (desktop-read)
+(desktop-save-mode 1)
+
+(pyvenv-activate "D:/virtualenv-django/Scripts/activate")
+
+
+;;ledger mode
+(autoload 'ledger-mode "ledger-mode" "A major mode for Ledger" t)
+;;(add-to-list 'load-path
+;;             (expand-file-name "/path/to/ledger/source/lisp/"))
+(add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+;;(setq ledger-reconcile-default-commodity "RMB")
+(load-file "~/.emacs.d/my-ledger.el")
+
+
+
+(require 'multiple-cursors)
+;; (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+;; (global-set-key (kbd "C->") 'mc/mark-next-like-this) # use key-chord 'gn' instead
+;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this) # use key-chord 'gp' instead
+;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this) # use key-chord 'gd' instead
+;; key-chord
+(require 'key-chord)
+(key-chord-mode 1)
+(key-chord-define-global "vj" 'mc/edit-lines)
+(key-chord-define-global "gd" 'mc/mark-all-symbol-like-this)
+(key-chord-define-global "gn" 'mc/mark-next-like-this-symbol)
+(key-chord-define-global "gp" 'mark-previous-symbol-like-this)
